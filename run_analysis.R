@@ -16,9 +16,9 @@ unzip(zipFile)
 #### data reading ####
 
 # load the labels for activities and features
-activitylabels = read.table(file.path(filepath,"activity_labels.txt"),sep = "")
+activitylabels = read.table(file.path(filepath,"activity_labels.txt"), stringsAsFactors = FALSE ,sep = "")
 colnames(activitylabels) = c("activityId","activityLabel")
-features = read.table(file.path(filepath,"features.txt"),sep = "") # will not convert text to factors
+features = read.table(file.path(filepath,"features.txt"), stringsAsFactors = FALSE ,sep = "") # will not convert text to factors
 
 # read data for training
 xtrain = read.table(file.path(filepath,"train","X_train.txt"),sep = "")
@@ -40,10 +40,10 @@ subject_all = rbind (subjecttrain, subjecttest)
 # keep only relevant measurements (mean and standard dev)
 select_features = grep("-(mean|std).*", as.character(features[,2]))
 selectedColNames <- features[select_features, 2]
-x_all = x_all[selectedColNames]
+x_all = x_all[,select_features]
 
 # assign column names
-colnames(x_all) = select_features[,2]
+colnames(x_all) = selectedColNames
 colnames(y_all) = "activity"
 colnames(subject_all) = "subject"
 
